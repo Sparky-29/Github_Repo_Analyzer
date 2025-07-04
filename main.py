@@ -17,6 +17,10 @@ username = ""
 @app.route("/", methods=["GET", "POST"])
 def home():
     
+    username = request.args.get("username")
+    if username:
+        return render_template("index.html", username=username)
+    
     if request.method == "POST":
         username = request.form.get("username")
     
