@@ -10,12 +10,12 @@
 <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom"> 
         <a href="index.html" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none"> 
             <svg class="bi me-2" width="40" height="32" aria-hidden="true">
-                <use xlink:href="#bootstrap"></use></svg> <span class="fs-4">{{username}} Table Analysis</span> </a> 
+                <use xlink:href="#bootstrap"></use></svg> <span class="fs-4">Table Analysis</span> </a> 
                 <ul class="nav nav-pills"> 
                     <div class="main_home">
-                        <li class="nav-item"><a href="{{url_for('home')}}" class="nav-link active" aria-current="page">Home</a></li>
-                        <li class="nav-item"><a href="{{url_for('charts')}}" class="nav-link">Charts</a></li> 
-                        <li class="nav-item"><a href="{{url_for('table')}}" class="nav-link">Tables</a></li> 
+                        <li class="nav-item"><a href="{{url_for('home', username=username)}}" class="nav-link active" aria-current="page">Home</a></li>
+                        <li class="nav-item"><a href="{{url_for('charts', username=username)}}" class="nav-link">Charts</a></li> 
+                        <li class="nav-item"><a href="{{url_for('table', username=username)}}" class="nav-link">Tables</a></li> 
                     </div> 
                 </ul>
     </header>

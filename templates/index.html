@@ -15,7 +15,7 @@
                 <use xlink:href="#bootstrap"></use></svg> <span class="fs-4">Github Analysis</span> </a> 
                 <ul class="nav nav-pills"> 
                     <div class="main_home">
-                        <li class="nav-item"><a href="{{url_for('home')}}" class="nav-link active" aria-current="page">Home</a></li> 
+                        <li class="nav-item"><a href="{{url_for('home', username=username)}}" class="nav-link active" aria-current="page">Home</a></li> 
                     </div>
                 </ul>
     </header>
@@ -25,42 +25,36 @@
         <div class="col-lg-6 mx-auto"> 
             <p class="lead mb-4">
                 Welcome to the Analysis of Github Repositories, where you can review a persons repositories that are currently public and open to viewing, where you can see a report of their work. For better viewing of the programmers you choose.
+                Username: {{name}}
             </p> 
 
             <!-- Entry Prompt -->
             <div class="entery_prompt">
                 <div class="col-12"> 
-                    <label for="username" class="form-label">Username</label> 
-                    <div class="input-group has-validation"> 
-                        <span class="input-group-text">@</span> 
-                        <input type="text" class="form-control" id="username" placeholder="Username" required=""> 
-                        <div class="invalid-feedback">Github username is required.</div> 
-
-                        <!-- Remove entry button -->
-                        <button class="btn btn-outline-primary rounded-circle p-2 lh-1" type="button" id="remove" onclick="document.getElementById('username').value = ''">
-                             <img src="https://www.svgrepo.com/show/365893/x-thin.svg" alt="" width="20px">
-                            <span class="visually-hidden">Dismiss</span> 
-                        </button>
-                    </div> 
+                    <label class="form-label">Username</label> 
+                    <form action="" method="post">
+                        <div class="input-group has-validation"> 
+                            <span class="input-group-text">@</span> 
+                            <input type="text" class="form-control" id="username" name="username" placeholder="Username" required>
+                            <button type="submit" class="btn btn-primary">Search</button>
+                            <div class="invalid-feedback">Github username is required.</div> 
+                            <!-- Remove entry button -->
+                            <button class="btn btn-outline-primary rounded-circle p-2 lh-1" type="button" id="remove" onclick="document.getElementById('username').value = ''">
+                                    <img src="https://www.svgrepo.com/show/365893/x-thin.svg" alt="" width="20px">
+                                <span class="visually-hidden">Dismiss</span> 
+                            </button>
+                        </div> 
+                    </form>
                 </div>
             </div>
-
-            <!-- <div class="entery_prompt">
-                <div class="col-12"> 
-                    <label for="username" class="form-label">Username</label> 
-                    <div class="input-group has-validation"> 
-                        <form action="{{url_for('home')}}">
-                            <input type="text" class="form-control" id="search" placeholder="Usern" name="search">
-                            <button type="submit" class="btn btn-primary">Search</button>
-                        </form>
-                    </div> 
-                </div>
-            </div> -->
+        </div>
+    </div>
             
             <!-- Other page buttons -->
-            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center"> 
-                <a href="{{url_for('charts')}}" class="nav-link"><button type="button" class="btn btn-primary btn-lg px-4 gap-3">Charts</button></a>
-                <a href="{{url_for('table')}}" class="nav-link"><button type="button" class="btn btn-outline-secondary btn-lg px-4">Tables</button> </a>
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                
+                <a href="{{url_for('charts', username=username)}}" class="nav-link"><button type="button" class="btn btn-primary btn-lg px-4 gap-3">Charts</button></a>
+                <a href="{{url_for('table', username=username)}}" class="nav-link"><button type="button" class="btn btn-outline-secondary btn-lg px-4">Tables</button> </a>
             </div> 
         </div> 
     </div>

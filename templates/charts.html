@@ -14,9 +14,9 @@
                 <use xlink:href="#bootstrap"></use></svg> <span class="fs-4">{{username}} Graph Analysis</span> </a> 
                 <ul class="nav nav-pills"> 
                     <div class="main_home">
-                        <li class="nav-item"><a href="{{url_for('home')}}" class="nav-link active" aria-current="page">Home</a></li>
-                        <li class="nav-item"><a href="{{url_for('charts')}}" class="nav-link">Charts</a></li> 
-                        <li class="nav-item"><a href="{{url_for('table')}}" class="nav-link">Tables</a></li> 
+                        <li class="nav-item"><a href="{{url_for('home', username=username)}}" class="nav-link active" aria-current="page">Home</a></li>
+                        <li class="nav-item"><a href="{{url_for('charts', username=username)}}" class="nav-link">Charts</a></li> 
+                        <li class="nav-item"><a href="{{url_for('table', username=username)}}" class="nav-link">Tables</a></li> 
                     </div> 
                 </ul>
     </header>
@@ -32,7 +32,7 @@
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <img src="static/{{username}}_bar_chart.png" alt="">
+            <img src="{{ url_for('static', filename=bar_chart) }}" alt="">
         </div>
     </div>
 </div>
