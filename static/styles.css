@@ -1,0 +1,39 @@
+.Github {
+    width: 100px;
+    height: 100px;
+}
+
+.main_home {
+    margin-right: 50px;
+    margin-top: 25px;
+}
+
+#username{
+    margin-bottom: 25px;
+}
+
+#remove{
+    margin-left: 25px;
+    margin-bottom: 25px;
+}
+
+.input-group-text{
+    margin-bottom: 25px;
+}
+
+#search{
+    margin-bottom: 25px;
+}
+
+.table {
+    border-collapse: collapse;
+    width: 100%;
+}
+th, .td {
+border: 1px solid #ddd;
+padding: 10px;
+text-align: left;
+}
+.table th {
+background-color: #f0f0f0;
+}
