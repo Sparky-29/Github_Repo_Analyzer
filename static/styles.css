@@ -37,3 +37,12 @@ text-align: left;
 .table th {
 background-color: #f0f0f0;
 }
+
+form{
+    justify-content: center;
+}
+
+.input-group-text{
+    justify-content: center;
+    
+}

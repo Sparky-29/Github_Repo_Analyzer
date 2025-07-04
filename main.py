@@ -3,37 +3,46 @@ import datetime as dt
 import pandas as pd
 import matplotlib.pyplot as plt
 import plotly.express as px
-from flask_bootstrap import Bootstrap5
-from flask import Flask, render_template
+from flask_bootstrap import Bootstrap
+from flask import Flask, render_template, request
 import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
-Bootstrap5(app)
+Bootstrap(app)
 
-username = input("Enter GitHub username: ")
+username = input("Enter Github Username? ")
 
 #* Creating the routes for HTML report.
 @app.route("/", methods=["GET", "POST"])
 def home():
+    # if request.method == "POST":
+    #     username = request.form["username"]
+    #     return render_template("index.html", username=username)
     return render_template("index.html")
 
 @app.route("/charts", methods=["GET", "POST"])
 def charts():
-    return render_template("charts.html", pie_html=pie_html, bar=bar_chart)
+    return render_template("charts.html", pie_html=pie_html, bar=bar_chart, username=username)
 
 @app.route("/table", methods=["GET", "POST"])
 def table():
+    df.to_html(f"templates/{username}.html")
     table = f"{username}.html"
     return render_template("table.html", table=table)
 
+
 def get_repos(username):
-    url = f"https://api.github.com/users/{username}/repos"
-    params = {"per_page": 100,
-              "rel": "next"}
-    response = requests.get(url, params=params)
-    response.raise_for_status()
-    return response.json()
+        url = f"https://api.github.com/users/{username}/repos"
+        params = {"per_page": 100,
+                "rel": "next"}
+        response = requests.get(url, params=params)
+        response.raise_for_status()
+        return response.json()
+# try:
+    
+# except:
+#     pass
 
 #* Creating CSV
 try:
