@@ -4,7 +4,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import plotly.express as px
 from flask_bootstrap import Bootstrap
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session
 import os
 
 app = Flask(__name__)
@@ -15,89 +15,73 @@ Bootstrap(app)
 @app.route("/", methods=["GET", "POST"])
 def home():
     
-    try:
-        if request.method == "GET":
-            username = request.args.get("username")
-            return render_template("index.html", username=username)
+    # username = ""
+        
+    if request.method == "POST":
+        username = request.form.get("username")
+    elif request.method == "GET":
+        username = request.args.get("username")
     
-    except Exception:
-        
-    
-        if request.method == "POST":
-            username = request.args.get("username")
-            return render_template("index.html", username=username)
-        
-        
-        
-        elif request.method == "POST":
-            username = request.form.get("username")
-            
-            #* Creating CSV
-            try:
-                with open (f"csv/{username}.csv", "r") as file:
-                    file.read()
-            except FileNotFoundError:
-                os.mkdir("csv")
-                with open (f"csv/{username}.csv", "w") as file:
-                    file.write("repo_name,description,url,forks,stars,language,creation_date,last_update")
-            except FileExistsError:
-                with open (f"csv/{username}.csv", "w") as file:
-                    file.write("repo_name,description,url,forks,stars,language,creation_date,last_update")
-            
-            def get_repos(username):
-                
-                url = f"https://api.github.com/users/{username}/repos"
-                params = {"per_page": 100,
-                        "rel": "next"}
-                response = requests.get(url, params=params)
-                response.raise_for_status()
-                return response.json()
+    if username:
 
-            df = pd.read_csv(f"csv/{username}.csv")
-
-            #* Receiving the repos
-            for repos in get_repos(username):
-                repo_name = repos["name"]
-                description = repos["description"]
-                url = repos["html_url"]
-                forks = repos["forks"]
-                stars = repos["stargazers_count"]
-                language = repos["language"]
-                start_date = repos["created_at"]
-                updates = []
-                updates.append(repos["updated_at"])
-                previous = updates[-1]
-                
-                first = dt.datetime.strptime(start_date, "%Y-%m-%dT%H:%M:%SZ")
-                creation_date = first.strftime("%B %d, %Y")
-                last = dt.datetime.strptime(previous, "%Y-%m-%dT%H:%M:%SZ")
-                last_update = last.strftime("%B %d, %Y")
-                
-                if repo_name in df["repo_name"].values:
-                    continue
-                else:
-                    df.loc[len(df)] = [repo_name, 
-                                    description, 
-                                    url, forks, 
-                                    stars, language, 
-                                    creation_date, 
-                                    last_update]
-                    
-            #* Creating the directories
-            df.to_csv(f"csv/{username}.csv", index=False)
+        #* Creating CSV
+        try:
+            with open (f"csv/{username}.csv", "r") as file:
+                file.read()
+        
+        except FileNotFoundError:
+            with open (f"csv/{username}.csv", "w") as file:
+                file.write("repo_name,description,url,forks,stars,language,creation_date,last_update")
+        
+        def get_repos(username):
             
-            return render_template("index.html", username=username)
+            url = f"https://api.github.com/users/{username}/repos"
+            params = {"per_page": 100,
+                    "rel": "next"}
+            response = requests.get(url, params=params)
+            response.raise_for_status()
+            return response.json()
+
+        df = pd.read_csv(f"csv/{username}.csv")
+
+        #* Receiving the repos
+        for repos in get_repos(username):
+            repo_name = repos["name"]
+            description = repos["description"]
+            url = repos["html_url"]
+            forks = repos["forks"]
+            stars = repos["stargazers_count"]
+            language = repos["language"]
+            start_date = repos["created_at"]
+            updates = []
+            updates.append(repos["updated_at"])
+            previous = updates[-1]
+            
+            first = dt.datetime.strptime(start_date, "%Y-%m-%dT%H:%M:%SZ")
+            creation_date = first.strftime("%B %d, %Y")
+            last = dt.datetime.strptime(previous, "%Y-%m-%dT%H:%M:%SZ")
+            last_update = last.strftime("%B %d, %Y")
+            
+            if repo_name in df["repo_name"].values:
+                continue
+            else:
+                df.loc[len(df)] = [repo_name, 
+                                description, 
+                                url, forks, 
+                                stars, language, 
+                                creation_date, 
+                                last_update]
+                
+        #* Creating the directories
+        df.to_csv(f"csv/{username}.csv", index=False)
+        
+        return render_template("index.html", username=username)
     
+
     return render_template("index.html")
 
 @app.route("/charts/<username>", methods=["GET", "POST"])
 def charts(username):
-    
-    # if request.method == "POST":
-    #     username = request.form.get("username")
-        
-    # elif request.method == "POST":
-    #     username = request.args.get("username")
     
     username = username
         
@@ -133,11 +117,8 @@ def charts(username):
 @app.route("/table/<username>", methods=["GET", "POST"])
 def table(username):
     
-    if request.method == "POST":
-        username = request.form.get("username")
-        
-    elif request.method == "POST":
-        username = request.args.get("username")
+    username = username
+    
     df = pd.read_csv(f"csv/{username}.csv")
     df.to_html(f"templates/{username}.html")
     table = f"{username}.html"
