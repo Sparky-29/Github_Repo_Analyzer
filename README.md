@@ -10,3 +10,6 @@ of each language mainly used.
 
 As for the tables tab.
 It will show a table of all of the repositories, the links, the forks, stars, the names of each repositories and languages.
+
+csv files are stored in the csv section bar graph is stored in the static folder, and the 
+pie graph is stored in the templates.
