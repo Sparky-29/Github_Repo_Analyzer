@@ -11,13 +11,15 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
 Bootstrap(app)
 
-username = ""
-
 #* Creating the routes for HTML report.
 @app.route("/", methods=["GET", "POST"])
 def home():
     
-    if request.method == "POST":
+    if request.method == "GET":
+        username = request.args.get("username")
+        return render_template("index.html", username=username)
+    
+    elif request.method == "POST":
         username = request.form.get("username")
         
         #* Creating CSV
@@ -76,20 +78,20 @@ def home():
         
         return render_template("index.html", username=username)
     
-    elif request.method == "GET":
-        username = request.args.get("username")
-        return render_template("index.html", username=username)
+    
     
     return render_template("index.html")
 
 @app.route("/charts/<username>", methods=["GET", "POST"])
 def charts(username):
     
-    if request.method == "POST":
-        username = request.form.get("username")
+    # if request.method == "POST":
+    #     username = request.form.get("username")
         
-    elif request.method == "POST":
-        username = request.args.get("username")
+    # elif request.method == "POST":
+    #     username = request.args.get("username")
+    
+    username = username
         
     df = pd.read_csv(f"csv/{username}.csv")
     #* Pie chart of number of repositories per language
@@ -123,7 +125,11 @@ def charts(username):
 @app.route("/table/<username>", methods=["GET", "POST"])
 def table(username):
     
-    username = username
+    if request.method == "POST":
+        username = request.form.get("username")
+        
+    elif request.method == "POST":
+        username = request.args.get("username")
     df = pd.read_csv(f"csv/{username}.csv")
     df.to_html(f"templates/{username}.html")
     table = f"{username}.html"
