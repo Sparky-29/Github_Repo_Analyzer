@@ -17,13 +17,21 @@ username = ""
 @app.route("/", methods=["GET", "POST"])
 def home():
     
-    username = request.args.get("username")
-    if username:
-        return render_template("index.html", username=username)
-    
     if request.method == "POST":
         username = request.form.get("username")
-    
+        
+        #* Creating CSV
+        try:
+            with open (f"csv/{username}.csv", "r") as file:
+                file.read()
+        except FileNotFoundError:
+            os.mkdir("csv")
+            with open (f"csv/{username}.csv", "w") as file:
+                file.write("repo_name,description,url,forks,stars,language,creation_date,last_update")
+        except FileExistsError:
+            with open (f"csv/{username}.csv", "w") as file:
+                file.write("repo_name,description,url,forks,stars,language,creation_date,last_update")
+        
         def get_repos(username):
             
             url = f"https://api.github.com/users/{username}/repos"
@@ -33,16 +41,7 @@ def home():
             response.raise_for_status()
             return response.json()
 
-        #* Creating CSV
-        try:
-            with open (f"csv/{username}.csv", "r") as file:
-                file.read()
-        except FileNotFoundError:
-            with open (f"csv/{username}.csv", "w") as file:
-                file.write("repo_name,description,url,forks,stars,language,creation_date,last_update")
-            
         df = pd.read_csv(f"csv/{username}.csv")
-        # print(df.columns)
 
         #* Receiving the repos
         for repos in get_repos(username):
@@ -75,17 +74,23 @@ def home():
         #* Creating the directories
         df.to_csv(f"csv/{username}.csv", index=False)
         
-
         return render_template("index.html", username=username)
     
-    
+    elif request.method == "GET":
+        username = request.args.get("username")
+        return render_template("index.html", username=username)
     
     return render_template("index.html")
 
 @app.route("/charts/<username>", methods=["GET", "POST"])
 def charts(username):
     
-    username = username
+    if request.method == "POST":
+        username = request.form.get("username")
+        
+    elif request.method == "POST":
+        username = request.args.get("username")
+        
     df = pd.read_csv(f"csv/{username}.csv")
     #* Pie chart of number of repositories per language
     fig = px.pie(labels=df["language"].value_counts().index, 
@@ -95,7 +100,6 @@ def charts(username):
 
     fig.update_traces(textinfo='label+percent', textposition='outside')
     pie_html = fig.to_html(full_html=False, include_plotlyjs="cdn")
-    # fig.show()
 
     #* Bar chart of number of repositories per year
     for col in df.columns:
@@ -113,7 +117,6 @@ def charts(username):
     plt.ylabel("Year")
     plt.title("Number of repositories per year")
     plt.savefig(f"static/{username}_bar_chart.png")
-    # plt.show()
     bar_chart = f"{username}_bar_chart.png"
     return render_template("charts.html", pie_html=pie_html, bar_chart=bar_chart, username=username)
 
