@@ -1,15 +1,117 @@
-### Github Repository Analyzer
+# GitHub Repository Analyzer
 
-This is a working Github Repo Analyzer, collecting data from a Github page, and creating tables and charts for you to review a persons data.
-Run the program then enter the HTML page.
-Search the Username you wish to review.
-Then you can click either on the tables tab or on the charts tab.
+A clean and lightweight Flask application that allows users to visualize and explore the repositories of any public GitHub profile. Simply enter a username, and get a fully interactive dashboard with charts, tables, and trends—no browser extensions or authentication needed.
 
-For the charts tab there will be 2 charts that you can review, one showing a bar chart of the timeline of all their projects and the other showing a percentage
-of each language mainly used.
+---
 
-As for the tables tab.
-It will show a table of all of the repositories, the links, the forks, stars, the names of each repositories and languages.
+##  What It Does
 
-csv files are stored in the csv section bar graph is stored in the static folder, and the 
-pie graph is stored in the templates.
+The app fetches public repository data from GitHub’s REST API and presents it in a digestible, visual format:
+- **Pie charts** showing language distribution across repositories
+- **Bar charts** illustrating yearly repository creation trends
+- **Data tables** showing repo names, descriptions, stars, forks, and timestamps
+
+It also generates and stores data locally in CSV format for fast reloads and optional analysis.
+
+---
+
+## Why I Built It
+
+I created this project to combine my interests in data visualization and web development. I wanted to build something useful for developers who are curious about their own GitHub activity—or recruiters looking to understand a candidate’s project history at a glance.
+
+This is also a project I’ve used to demonstrate:
+- API integration with authentication-free public endpoints
+- Data wrangling and cleaning
+- Building interactive and polished visuals with **Plotly** and **Matplotlib**
+- Web app deployment with **Flask** and **Bootstrap**
+
+---
+
+## Technologies Used
+
+| Area               | Stack                            |
+|--------------------|-----------------------------------|
+| Backend            | Python, Flask                     |
+| Frontend Styling   | Bootstrap (via Flask-Bootstrap)   |
+| Charts & Graphs    | Plotly, Matplotlib                |
+| Data Management    | Pandas, CSV                       |
+| GitHub Integration | GitHub REST API                   |
+
+---
+
+## How It Works
+
+### Step 1: Run the App
+
+Make sure you have the necessary dependencies:
+
+```bash
+pip install requirements.txt
+```
+
+Start the development server:
+
+```bash
+python main.py
+```
+
+The app runs on `http://127.0.0.1:5000/`.
+
+---
+
+### Step 2: Enter a GitHub Username
+
+Once on the homepage:
+- Input any valid public GitHub username
+- Hit submit
+- The app fetches, processes, and stores repo data into `csv/username.csv`
+
+---
+
+### Step 3: Explore the Visuals
+
+After submission, navigate to:
+- `/charts/<username>` — for interactive charts
+- `/table/<username>` — for an HTML table of repos
+
+---
+
+## Example Output
+
+- **Pie Chart:** % of repositories by language
+- **Bar Chart:** Number of repositories created per year
+- **CSV File:** Saved locally for reuse and backup
+- **HTML Table:** Interactive table of all repository metadata
+
+---
+
+## Design Decisions
+
+- CSV files are used to avoid unnecessary re-fetching of data
+- Missing fields like `language` are handled gracefully (`"Unknown"`)
+- GitHub rate limits are respected with minimal API calls
+- Static bar charts are saved to disk for fast rendering
+
+---
+
+## Future Enhancements
+
+- OAuth login for private repo analysis
+- Deployable via Docker or Render
+- Add repository filtering by forks, stars, or language
+- Extend visualization with timelines and contribution heatmaps
+
+---
+
+## License
+
+This project is open-source and available under the [MIT License](LICENSE). Built for learning, experimenting, and showcasing development skills.
+
+---
+
+## Final Notes
+
+This project reflects my approach to building tools that are both useful and elegant. It’s simple but robust, and easy to expand as needs evolve. If you’re a hiring manager, a fellow developer, or just curious—thanks for checking it out!
+
+**Author:** Clark Allan  
+**Contact:** [https://github.com/Sparky-29](https://github.com/Sparky-29)
