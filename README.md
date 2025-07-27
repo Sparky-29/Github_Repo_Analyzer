@@ -17,7 +17,7 @@ It also generates and stores data locally in CSV format for fast reloads and opt
 
 ## Why I Built It
 
-I created this project to combine my interests in data visualization and web development. I wanted to build something useful for developers who are curious about their own GitHub activity—or recruiters looking to understand a candidate’s project history at a glance.
+This was my very first project done completely on my own, and I am super happy with it. I'm wanting to start looking for work so I wanted to create something for my Portfolio that I gravitated towards. Something that could be useful and simple to use for anybody from beginner programmers to professionals, and even for recruiters. A way to view either your own Github activity or somebody of interest, or the recruiters to view a candidate's project history at a quick glance.
 
 This is also a project I’ve used to demonstrate:
 - API integration with authentication-free public endpoints
